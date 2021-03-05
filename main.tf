@@ -126,8 +126,11 @@ resource "aws_elasticsearch_domain" "default" {
     dedicated_master_type    = var.dedicated_master_type
     zone_awareness_enabled   = var.zone_awareness_enabled
 
-    zone_awareness_config {
-      availability_zone_count = length(var.subnet_ids)
+    dynamic "zone_awareness_config" {
+      for_each = var.zone_awareness_enabled == "true" ? [1] : []
+      content {
+        availability_zone_count = length(var.subnet_ids) 
+      }
     }
   }
 
@@ -137,7 +140,7 @@ resource "aws_elasticsearch_domain" "default" {
 
   vpc_options {
     security_group_ids = [aws_security_group.default[0].id]
-    subnet_ids         = var.subnet_ids
+    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]] 
   }
 
   snapshot_options {
