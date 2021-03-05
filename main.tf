@@ -127,7 +127,7 @@ resource "aws_elasticsearch_domain" "default" {
     zone_awareness_enabled   = var.zone_awareness_enabled
 
     zone_awareness_config {
-      availability_zone_count = length(var.subnet_ids)
+      availability_zone_count = var.zone_awareness_enabled == "true" ? length(var.subnet_ids) : 1 
     }
   }
 
@@ -137,7 +137,7 @@ resource "aws_elasticsearch_domain" "default" {
 
   vpc_options {
     security_group_ids = [aws_security_group.default[0].id]
-    subnet_ids         = var.subnet_ids
+    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]] 
   }
 
   snapshot_options {
