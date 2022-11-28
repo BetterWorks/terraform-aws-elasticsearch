@@ -23,7 +23,7 @@ module "user_label" {
 resource "aws_security_group" "default" {
   count       = var.enabled == "true" ? 1 : 0
   vpc_id      = var.vpc_id
-  name        = '${module.label.id}${var.name_suffix}'
+  name        = "${module.label.id}${var.name_suffix}"
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
   tags        = module.label.tags
 }
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = var.enabled == "true" ? 1 : 0
-  domain_name           = '${module.label.id}${var.name_suffix}'
+  domain_name           = "${module.label.id}${var.name_suffix}"
   elasticsearch_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
