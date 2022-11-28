@@ -13,6 +13,12 @@ variable "name" {
   description = "Name of the application"
 }
 
+variable "name_suffix" {
+  type        = string
+  default = ""
+  description = "Name of the application"
+}
+
 variable "delimiter" {
   type        = string
   default     = "-"
@@ -67,7 +73,7 @@ variable "dns_zone_id" {
 
 variable "elasticsearch_version" {
   type        = string
-  default     = "6.5"
+  default     = "7.10"
   description = "Version of Elasticsearch to deploy"
 }
 
