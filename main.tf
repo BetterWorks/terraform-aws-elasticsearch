@@ -23,7 +23,7 @@ module "user_label" {
 resource "aws_security_group" "default" {
   count       = var.enabled == "true" ? 1 : 0
   vpc_id      = var.vpc_id
-  name        = "${module.label.id}${var.name_suffix}"
+  name        = "${module.label.id}${var.es_name_suffix}"
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
   tags        = module.label.tags
 }
