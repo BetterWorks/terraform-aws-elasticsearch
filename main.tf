@@ -23,7 +23,7 @@ module "user_label" {
 resource "aws_security_group" "default" {
   count       = var.enabled == "true" ? 1 : 0
   vpc_id      = var.vpc_id
-  name        = module.label.id
+  name        = "${module.label.id}${var.es_name_suffix}"
   description = "Allow inbound traffic from Security Groups and CIDRs. Allow all outbound traffic"
   tags        = module.label.tags
 }
@@ -71,7 +71,7 @@ resource "aws_iam_service_linked_role" "default" {
 # Role that pods can assume for access to elasticsearch and kibana
 resource "aws_iam_role" "elasticsearch_user" {
   count              = var.enabled == "true" ? 1 : 0
-  name               = module.user_label.id
+  name               = "${module.user_label.id}${var.es_name_suffix}"
   assume_role_policy = data.aws_iam_policy_document.assume_role[0].json
   description        = "IAM Role to assume to access the Elasticsearch ${module.label.id} cluster"
   tags               = module.user_label.tags
@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_elasticsearch_domain" "default" {
   count                 = var.enabled == "true" ? 1 : 0
-  domain_name           = module.label.id
+  domain_name           = "${module.label.id}${var.es_name_suffix}"
   elasticsearch_version = var.elasticsearch_version
 
   advanced_options = var.advanced_options
@@ -194,7 +194,7 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_elasticsearch_domain_policy" "default" {
   count           = var.enabled == "true" ? 1 : 0
-  domain_name     = module.label.id
+  domain_name     = "${module.label.id}${var.es_name_suffix}"
   access_policies = join("", data.aws_iam_policy_document.default.*.json)
 }
 

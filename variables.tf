@@ -13,6 +13,12 @@ variable "name" {
   description = "Name of the application"
 }
 
+variable "es_name_suffix" {
+  type        = string
+  default = ""
+  description = "suffix to add to ES instance naming"
+}
+
 variable "delimiter" {
   type        = string
   default     = "-"
