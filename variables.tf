@@ -73,7 +73,7 @@ variable "dns_zone_id" {
 
 variable "elasticsearch_version" {
   type        = string
-  default     = "7.10"
+  default     = "6.5"
   description = "Version of Elasticsearch to deploy"
 }
 
