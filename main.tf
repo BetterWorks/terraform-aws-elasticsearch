@@ -203,7 +203,7 @@ module "domain_hostname" {
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.elasticsearch_subdomain_name) > 0 ? "${var.elasticsearch_subdomain_name}${var.es_name_suffix}" : "${module.label.id}${var.es_name_suffix}"
+  name      = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : module.label.id
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.endpoint
@@ -214,7 +214,7 @@ module "kibana_hostname" {
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.kibana_subdomain_name) > 0 ? "${var.kibana_subdomain_name}${var.es_name_suffix}" : format("%s-kibana%s", module.label.id, var.es_name_suffix)
+  name      = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", module.label.id)
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.kibana_endpoint
