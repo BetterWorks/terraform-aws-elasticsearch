@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tf-upgrade"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -10,7 +10,7 @@ module "label" {
 }
 
 module "user_label" {
-  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tf-upgrade"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
