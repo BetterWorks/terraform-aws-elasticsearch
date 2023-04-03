@@ -199,7 +199,7 @@ resource "aws_elasticsearch_domain_policy" "default" {
 }
 
 module "domain_hostname" {
-  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
@@ -210,7 +210,7 @@ module "domain_hostname" {
 }
 
 module "kibana_hostname" {
-  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
