@@ -129,7 +129,7 @@ resource "aws_elasticsearch_domain" "default" {
     dynamic "zone_awareness_config" {
       for_each = var.zone_awareness_enabled == "true" ? [1] : []
       content {
-        availability_zone_count = length(var.subnet_ids) 
+        availability_zone_count = length(var.subnet_ids)
       }
     }
   }
@@ -140,7 +140,7 @@ resource "aws_elasticsearch_domain" "default" {
 
   vpc_options {
     security_group_ids = [aws_security_group.default[0].id]
-    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]] 
+    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]]
   }
 
   snapshot_options {
@@ -203,7 +203,7 @@ module "domain_hostname" {
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : "${module.label.id}${var.es_name_suffix}"
+  dns_name  = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : "${module.label.id}${var.es_name_suffix}"
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.endpoint
@@ -214,7 +214,7 @@ module "kibana_hostname" {
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", "${module.label.id}${var.es_name_suffix}")
+  dns_name  = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", "${module.label.id}${var.es_name_suffix}")
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.kibana_endpoint
