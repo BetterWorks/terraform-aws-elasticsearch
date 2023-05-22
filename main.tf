@@ -1,5 +1,5 @@
 module "label" {
-  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.13.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -10,7 +10,7 @@ module "label" {
 }
 
 module "user_label" {
-  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.12.0"
+  source     = "git::https://github.com/betterworks/terraform-null-label.git?ref=tags/0.13.0"
   enabled    = var.enabled
   namespace  = var.namespace
   name       = var.name
@@ -129,7 +129,7 @@ resource "aws_elasticsearch_domain" "default" {
     dynamic "zone_awareness_config" {
       for_each = var.zone_awareness_enabled == "true" ? [1] : []
       content {
-        availability_zone_count = length(var.subnet_ids) 
+        availability_zone_count = length(var.subnet_ids)
       }
     }
   }
@@ -140,7 +140,7 @@ resource "aws_elasticsearch_domain" "default" {
 
   vpc_options {
     security_group_ids = [aws_security_group.default[0].id]
-    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]] 
+    subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]]
   }
 
   snapshot_options {
@@ -199,22 +199,22 @@ resource "aws_elasticsearch_domain_policy" "default" {
 }
 
 module "domain_hostname" {
-  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : "${module.label.id}${var.es_name_suffix}"
+  dns_name  = length(var.elasticsearch_subdomain_name) > 0 ? var.elasticsearch_subdomain_name : "${module.label.id}${var.es_name_suffix}"
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.endpoint
 }
 
 module "kibana_hostname" {
-  source    = "git::https://github.com/betterworks/terraform-aws-route53-cluster-hostname.git?ref=tags/0.3.0"
+  source    = "git::https://github.com/cloudposse/terraform-aws-route53-cluster-hostname.git?ref=tags/0.8.0"
   enabled   = var.enabled == "true" && length(var.dns_zone_id) > 0 ? "true" : "false"
   namespace = var.namespace
   stage     = var.stage
-  name      = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", "${module.label.id}${var.es_name_suffix}")
+  dns_name  = length(var.kibana_subdomain_name) > 0 ? var.kibana_subdomain_name : format("%s-kibana", "${module.label.id}${var.es_name_suffix}")
   ttl       = 60
   zone_id   = var.dns_zone_id
   records   = aws_elasticsearch_domain.default.*.kibana_endpoint
