@@ -138,6 +138,11 @@ resource "aws_elasticsearch_domain" "default" {
     enabled = var.node_to_node_encryption_enabled
   }
 
+  domain_endpoint_options {
+    enforce_https       = var.enforce_https
+    tls_security_policy = var.tls_security_policy
+  }
+
   vpc_options {
     security_group_ids = [aws_security_group.default[0].id]
     subnet_ids         = var.zone_awareness_enabled == "true" ? var.subnet_ids : [var.subnet_ids[0]]

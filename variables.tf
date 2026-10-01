@@ -228,3 +228,15 @@ variable "node_to_node_encryption_enabled" {
   description = "Whether to enable node-to-node encryption"
 }
 
+
+variable "enforce_https" {
+  type        = string
+  default     = "true"
+  description = "Whether to require HTTPS for all traffic to the domain endpoint"
+}
+
+variable "tls_security_policy" {
+  type        = string
+  default     = "Policy-Min-TLS-1-2-2019-07"
+  description = "TLS security policy for the domain endpoint. Only applies when enforce_https is true"
+}
